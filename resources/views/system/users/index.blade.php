@@ -75,7 +75,7 @@
 
 @section('content')
     <h3 class="page-title">
-        Quản lý <small>&nbsp;tài khoản</small>
+        Quản lý tài khoản <small>&nbsp; truy cập</small>
     </h3>
     <!-- END PAGE HEADER-->
     <div class="row">
@@ -97,32 +97,12 @@
                         <div class="col-md-3">
                             <div class="form-group">
                                 <select class="form-control" name="phanloai" id="phanloai">
-                                    @if(session('admin')->sadmin == 'ssa' || session('admin')->sadmin == 'sa')
+                                    @if(session('admin')->sadmin == 'ssa')
                                     <option value="HT" {{($pl == "HT") ? 'selected' : ''}}>Quản trị hệ thống</option>
+                                    @endif
                                     <option value="T" {{($pl == "T") ? 'selected' : ''}}>Tổng hợp</option>
                                     <option value="H" {{($pl == "H") ? 'selected' : ''}}>Quản lý</option>
-                                    <!--option value="X" {{($pl == "X") ? 'selected' : ''}}>Cấp Xã</option-->
-                                    @endif
-                                    @if(canGeneral('dvlt','dvlt') )
-                                        @if(can('ttdn','dvlt'))
-                                            <option value="DVLT" {{($pl == "DVLT") ? 'selected' : ''}}>Dịch vụ lưu trú</option>
-                                        @endif
-                                    @endif
-                                    @if(canGeneral('dvvt','vtxk') || canGeneral('dvvt','vtxb') || canGeneral('dvvt','vtxtx') || canGeneral('dvvt','vtch'))
-                                        @if(can('ttdn','dvvt'))
-                                            <option value="DVVT" {{($pl == "DVVT") ? 'selected' : ''}}>Dịch vụ vận tải</option>
-                                        @endif
-                                    @endif
-                                    @if(canGeneral('dvgs','dvgs'))
-                                        @if(can('ttdn','dvgs'))
-                                            <option value="DVGS" {{($pl == "DVGS") ? 'selected' : ''}}>Mặt hàng sữa</option>
-                                        @endif
-                                    @endif
-                                    @if(canGeneral('dvtacn','dvtacn'))
-                                        @if(can('ttdn','dvtacn'))
-                                            <option value="DVTACN" {{($pl == "DVTACN") ? 'selected' : ''}}>Thức ăn chăn nuôi</option>
-                                        @endif
-                                    @endif
+                                    <option value="X" {{($pl == "X") ? 'selected' : ''}}>Đơn vị</option>
                                 </select>
                             </div>
                         </div>

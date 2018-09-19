@@ -8,24 +8,6 @@ Route::get('/ajax/checkmasothue','AjaxController@checkmasothue');
 Route::get('/ajax/registerthongtin','AjaxController@registerthongtin');
 Route::get('/ajax/getTown','AjaxController@getTown');
 
-// <editor-fold defaultstate="collapsed" desc="--Đăng ký tài khoản--">
-Route::get('/ajax/registercheckmasothue','RegisterController@checkmasothue');
-Route::get('/ajax/registercheckuser','RegisterController@checkuser');
-Route::resource('register','RegisterController');
-Route::post('register/tralai','RegisterController@tralai');
-Route::post('register/createtk','RegisterController@createtk');
-Route::post('register/delete','RegisterController@delete');
-
-Route::get('searchtkdangky','RegisterController@searchregister');
-Route::post('searchtkdangky','RegisterController@checksearchregister');
-Route::get('searchtkdangky/show','RegisterController@showttdktk');
-Route::post('searchtkdangky/show','RegisterController@chinhsuadktk');
-
-Route::get('dangkytaikhoan','RegisterController@dangkytaikhoan');
-Route::post('dangkytaikhoan','RegisterController@dangkytaikhoanstore');
-Route::patch('dangkytaikhoan/id={id}','RegisterController@dangkytaikhoanupdate');
-
-// </editor-fold>//End Hệ thống- Đăng ký
 
 // <editor-fold defaultstate="collapsed" desc="--Setting--">
 Route::resource('general','GeneralConfigsController');
@@ -67,28 +49,6 @@ Route::post('users','UsersController@store');
 //EndUsers
 // </editor-fold>//End Setting
 
-// <editor-fold defaultstate="collapsed" desc="--Báo cáo--">
-
-// </editor-fold>//End Reports
-
-// <editor-fold defaultstate="collapsed" desc="--Quản lý--">
-Route::get('thongtindoanhnghiep','CompanyController@ttdn');
-Route::get('thongtindoanhnghiep/{id}/edit','CompanyController@ttdnedit');
-Route::patch('thongtindoanhnghiep/{id}','CompanyController@ttdnupdate');
-Route::get('thongtindoanhnghiep/{id}/chinhsua','CompanyController@ttdnchinhsua');
-Route::patch('thongtindoanhnghiep/df/{id}','CompanyController@ttdncapnhat');
-Route::get('thongtindoanhnghiep/{id}/chuyen','CompanyController@ttdnchuyen');
-Route::post('thongtindoanhnghiep/upavatar','CompanyController@upavatar');
-
-include('manage/dvlt.php');
-include('manage/dvgs.php');
-include('manage/dvtacn.php');
-include('manage/hhdv.php');
-include('manage/dvvt.php');
-// </editor-fold>//End Manage
-
-include('congbo/congbo.php');
-Route::get('ghichuct','HomeController@ghichuct');
 
 
 

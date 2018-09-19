@@ -19,17 +19,9 @@ class CreateGeneralConfigsTable extends Migration
             $table->string('maqhns')->nullable();
             $table->string('diachi')->nullable();
             $table->string('tel')->nullable();
-            $table->string('thutruong')->nullable();
-            $table->string('ketoan')->nullable();
-            $table->string('nguoilapbieu')->nullable();
             $table->string('diadanh')->nullable();
             $table->text('setting')->nullable();
             $table->text('thongtinhd')->nullable();
-            $table->double('thoihanlt')->default(0);
-            $table->double('thoihanvt')->default(0);
-            $table->double('thoihangs')->default(0);
-            $table->double('thoihantacn')->default(0);
-            $table->double('sodvvt')->default(0); //không để vào bảng kê khai như DVLT dc do có 4 loại hình vận tải
             $table->timestamps();
         });
     }

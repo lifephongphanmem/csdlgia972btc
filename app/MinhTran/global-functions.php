@@ -754,7 +754,11 @@ function canDV($perm=null,$module = null, $action = null){
 }
 
 function getGeneralConfigs() {
-    return \App\GeneralConfigs::all()->first()->toArray();
+    $model = \App\GeneralConfigs::all()->first();
+    if(count($model)>0)
+        return $model->toArray();
+    else
+        return '';
 }
 
 function getDouble($str)

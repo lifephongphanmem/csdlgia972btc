@@ -23,14 +23,12 @@ use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
-    public function login()
-    {
+    public function login(){
         return view('system.users.login')
             ->with('pageTitle', 'Đăng nhập hệ thống');
     }
 
-    public function signin(Request $request)
-    {
+    public function signin(Request $request){
         $input = $request->all();
             $check = Users::where('username', $input['username'])
                 ->count();
@@ -40,7 +38,7 @@ class UsersController extends Controller
                 $ttuser = Users::where('username', $input['username'])->first();
         }
         if (md5($input['password']) == $ttuser->password) {
-            if ($ttuser->status == "Kích hoạt") {
+            if ($ttuser->status == "actived") {
                 if ($ttuser->level == 'DVVT') {
                     $ttdnvt = Company::where('maxa', $ttuser->maxa)
                         ->where('level','DVVT')
@@ -120,50 +118,35 @@ class UsersController extends Controller
             if (session('admin')->sadmin == 'ssa' || session('admin')->sadmin == 'sa'
                 || session('admin')->sadmin == 'satc' || session('admin')->sadmin == 'sagt' || session('admin')->sadmin == 'sact') {
                 $inputs = $request->all();
-                if (session('admin')->sadmin == 'ssa' || session('admin')->sadmin =='sa')
-                    $inputs['phanloai'] = isset($inputs['phanloai']) ? $inputs['phanloai'] : 'T';
-                elseif(session('admin')->sadmin == 'sagt')
-                    $inputs['phanloai'] = isset($inputs['phanloai']) ? $inputs['phanloai'] : 'DVVT';
-                elseif(session('admin')->sadmin == 'satc')
-                    $inputs['phanloai'] = isset($inputs['phanloai']) ? $inputs['phanloai'] : 'DVLT';
-                elseif(session('admin')->sadmin == 'sact')
-                    $inputs['phanloai'] = isset($inputs['phanloai']) ? $inputs['phanloai'] : 'DVGS';
-                //checkquyền
-                if($inputs['phanloai'] == 'DVLT' && can('ttdn','dvlt') || $inputs['phanloai'] == 'DVVT' && can('ttdn','dvvt')
-                    || $inputs['phanloai'] == 'DVGS' && can('ttdn','dvgs') || $inputs['phanloai'] == 'DVTACN' && can('ttdn','dvtacn'))
-                    $model = Users::where('level', $inputs['phanloai'])
-                        ->orderBy('id', 'desc')
+                $inputs['phanloai'] = isset($inputs['phanloai']) ? $inputs['phanloai'] : 'T';
+                if ($inputs['phanloai'] == 'HT') {
+                    $model = User::where('level','sa')
                         ->get();
-                else{
-                    if ($inputs['phanloai'] == 'HT') {
-                        $model = User::wherein('level', array('satc', 'sact', 'sa', 'sagt'))
-                            ->get();
-                        if(session('admin')->sadmin != 'ssa') {
-                            $index_unset = 0;
-                            foreach ($model as $user) {
-                                if ( $user->sadmin == 'sa') {
-                                    unset($model[$index_unset]);
-                                }
-                                $index_unset++;
-                            }
-                        }
-                    }else{
-                        $model = Users::where('level', $inputs['phanloai'])
-                            ->orderBy('id', 'desc')
-                            ->get();
+                    if(session('admin')->sadmin != 'ssa') {
                         $index_unset = 0;
                         foreach ($model as $user) {
-                            if ($user->sadmin == 'ssa') {
+                            if ( $user->sadmin == 'sa') {
                                 unset($model[$index_unset]);
                             }
                             $index_unset++;
                         }
                     }
+                }else{
+                    $model = Users::where('level', $inputs['phanloai'])
+                        ->orderBy('id', 'desc')
+                        ->get();
+                    $index_unset = 0;
+                    foreach ($model as $user) {
+                        if ($user->sadmin == 'ssa') {
+                            unset($model[$index_unset]);
+                        }
+                        $index_unset++;
+                    }
                 }
                 return view('system.users.index')
                     ->with('model', $model)
                     ->with('pl', $inputs['phanloai'])
-                    ->with('pageTitle', 'Danh sách tài khoản');
+                    ->with('pageTitle', 'Quản lý tài khoản truy cập');
             }else
                 return view('errors.perm');
         } else

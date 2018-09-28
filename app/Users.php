@@ -16,6 +16,7 @@ class Users extends Model
         'status',
         'maxa',
         'mahuyen',
+        'cqcq',
         'level',
         'sadmin',
         'permission',

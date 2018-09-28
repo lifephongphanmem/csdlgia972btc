@@ -194,7 +194,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <ul class="nav navbar-nav pull-right">
                 <!-- BEGIN USER LOGIN DROPDOWN -->
                 <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
-                <!--li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                     <a href="{{url('giahanghoadichvu')}}" target="_blank" class="dropdown-toggle">
                         <i class="fa fa-cloud"></i>
 					<span class="badge badge-danger">
@@ -202,7 +202,7 @@ License: You must have a valid license purchased only from themeforest(the above
                     </a>
                     <ul>
                     </ul>
-                </li-->
+                </li>
                 <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                     <a href="http://help.csdlgia.vn" class="dropdown-toggle" target="_blank">
                         <i class="fa fa-folder-open-o"></i>
@@ -292,15 +292,19 @@ License: You must have a valid license purchased only from themeforest(the above
                     </a>
                 </li>
                 <!--Manager-->
-                @if(session('admin')->sadmin != 'sa')
-                    @include('includes.main.mucgiahhdv')
-                    @include('includes.main.thamdinhgiadp')
-                    @include('includes.main.vanbanqlnnvegia')
-                    @include('includes.main.ttphucvuctqlnnvegia')
+                @if(session('admin')->sadmin != 'sa' && session('admin')->sadmin != 'satc'
+                    && session('admin')->sadmin != 'sagt' && session('admin')->sadmin != 'sact')
+                    @include('includes.main.main_hhdv')
+                    @include('includes.main.maindvlt')
+                    @include('includes.main.maindvvt')
+                    @include('includes.main.maindvgs')
+                    @include('includes.main.maindvtacn')
+                    @include('includes.main.main_reports')
                 @endif
                 <!--End Manager-->
 
-                @if(session('admin')->sadmin == 'ssa' || session('admin')->sadmin == 'sa')
+                @if(session('admin')->sadmin == 'ssa' || session('admin')->sadmin == 'sa'
+                    || session('admin')->sadmin == 'satc' || session('admin')->sadmin == 'sagt' || session('admin')->sadmin == 'sact')
                 <li>
                     <a href="">
                         <i class="icon-settings"></i>
@@ -308,10 +312,95 @@ License: You must have a valid license purchased only from themeforest(the above
                         <span class="arrow "></span>
                     </a>
                     <ul class="sub-menu">
-                        <li><a href="{{url('district')}}"> Danh mục đơn vị quản lý</a></li>
-                        <li><a href="{{url('town')}}"> Danh mục đơn vị xã/phường</a></li>
+                        @if(session('admin')->sadmin == 'sa' || session('admin')->sadmin == 'ssa' )
+                            <li><a href="{{url('district')}}"> Danh mục đơn vị quản lý</a></li>
+                            <li><a href="{{url('town')}}"> Danh mục đơn vị xã/phường</a></li>
+
+                            <!-- Hệ thống giá hàng hóa, dịch vu -->
+                            @if(canGeneral('hhdv','hhdvtn') || canGeneral('hhdv','hhxnk') || canGeneral('hhdv','hhtt')
+                                || canGeneral('hhdv','kkgtw') || canGeneral('hhdv','kkgdp'))
+                                <li>
+                                    <a href="javascript:;">Giá hàng hóa <span class="arrow"></span> </a>
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{url('dmthitruong')}}"> Danh mục thị trường</a>
+                                        </li>
+                                        <!--li>
+                                            <a href="{{url('dmloaigia')}}"> Danh mục loại giá</a>
+                                        </li-->
+                                        <li>
+                                            <a href="{{url('dmloaihh')}}"> Danh mục loại hàng hóa</a>
+                                        </li>
+                                        @if(canGeneral('hhdv','hhtt'))
+                                            <li>
+                                                <a href="{{url('dmhanghoa-thitruong')}}"> Hàng hóa thị trường</a>
+                                            </li>
+                                            @endif
+                                                    <!-- 1. Thay thế phần mặt hàng trong nước dành cho Lào Cai -->
+                                            @if(!canGeneral('hhdv','hhdvlc'))<!--Chưa phân quyền-->
+                                            <li>
+                                                <a href="{{url('dmhanghoa-hanghoa')}}">Hàng hóa, dịch vụ trong nước</a>
+                                            </li>
+                                            @endif
+                                                    <!--End 1. -->
+                                            @if(canGeneral('hhdv','hhdvtn'))
+                                                <li>
+                                                    <a href="{{url('dmhanghoa-trongnuoc')}}">Mặt hàng trong nước</a>
+                                                </li>
+                                            @endif
+                                            @if(canGeneral('hhdv','hhxnk'))
+                                                <li>
+                                                    <a href="{{url('dmhanghoa-xuatnhapkhau')}}"> Mặt hàng xuất nhập khẩu</a>
+                                                </li>
+                                        @endif
+                                    </ul>
+                                </li>
+                            @endif
+
+                            @if(canGeneral('hhdv','loaidat') || canGeneral('hhdv','vitri'))
+                                <li>
+                                    <a href="javascript:;">Giá đất <span class="arrow"></span> </a>
+                                    <ul class="sub-menu">
+                                        @if(canGeneral('hhdv','loaidat'))
+                                            <li>
+                                                <a href="{{url('dmloaidat')}}"> Danh mục phân loại đất</a>
+                                            </li>
+                                        @endif
+
+                                        @if(canGeneral('hhdv','vitri'))
+                                            <li>
+                                                <a href="{{url('dmqdgiadat')}}">Danh mục văn bản quy định giá</a>
+                                            </li>
+                                        @endif
+
+                                    </ul>
+                                </li>
+                            @endif
+
+                            @if(canGeneral('hhdv','gttruocba'))
+                                <li><a href="{{url('dmloaixe-thuetruocba')}}">Danh mục thuế trước bạ</a> </li>
+                            @endif
+                            @if(canGeneral('hhdv','gthuetn'))
+                                <li><a href="{{url('dmthuetn')}}">Danh mục thuế tài nguyên</a> </li>
+                            @endif
+                            @if(canGeneral('hhdv','ttqd'))
+                                <li><a href="{{url('dmloaivanban')}}">Danh mục loại văn bản</a> </li>
+                            @endif
+                            <li><a href="{{url('dmtd/pl=all')}}">Thời điểm kê khai</a></li>
+
+                            @if(session('admin')->sadmin == 'ssa' || session('admin')->sadmin == 'sa')
+                                <li><a href="{{url('diabanhoatdong')}}">Địa bàn hoạt động</a></li>
+                             @endif
+                        @endif
+                        <li>
+                            <a href="{{url('xetduyet_thaydoi_ttdoanhnghiep')}}">
+                                <span class="title">Thông tin DN thay đổi</span>
+                            </a>
+                        </li>
+                        <li><a href="{{url('company')}}"> Danh sách doanh nghiệp</a></li>
                         <li><a href="{{url('users')}}"> Quản lý tài khoản</a></li>
-                        <li><a href="{{url('general')}}"> Cấu hình hệ thống</a></li>
+                        <li><a href="{{url('register')}}"> Tài khoản đăng ký</a></li>
+                        <li><a href="{{url('general')}}">Cấu hình hệ thống</a></li>
                     </ul>
                 </li>
                 @endif
@@ -354,7 +443,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- BEGIN FOOTER -->
 <div class="page-footer">
     <div class="page-footer-inner">
-        2016 &copy; LifeSoft <a href="">Tiện ích hơn - Hiệu quả hơn</a>
+        2016 &copy; LifeSoft <a href="" >Tiện ích hơn - Hiệu quả hơn</a>
     </div>
     <div class="scroll-to-top">
         <i class="icon-arrow-up"></i>
